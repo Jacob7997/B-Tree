@@ -10,6 +10,9 @@ public class BMain {
 		int t = scn.nextInt();
 		int num;
 		BTree tree = new BTree(t);
+		System.out.println("Press : 1 Insertion | 2 Search | 3 Deletion ");
+		System.out.println("Following with the key you want that action.");
+		System.out.println();
 
 		tree.insert(5);
 		tree.insert(10);
@@ -17,6 +20,13 @@ public class BMain {
 		tree.insert(40);
 		tree.insert(50);
 		tree.insert(60);
+		tree.insert(45);
+		tree.insert(25);
+		tree.insert(21);
+		tree.insert(22);
+		tree.insert(20);
+
+
 		System.out.println(tree.toString());
 
 		while (true) {
@@ -37,6 +47,15 @@ public class BMain {
 				num = scn.nextInt();
 				System.out.println(tree.delete(num));
 				 System.out.println(tree.toString());
+				break;
+				
+			case 4:
+				num = scn.nextInt();
+				System.out.println(Arrays.toString(tree.findPredecessorRec(num, tree.search(num)).getKeys()));
+				break;
+			case 5:
+				num = scn.nextInt();
+				System.out.println(Arrays.toString(tree.findSuccessorRec(num, tree.search(num)).getKeys()));
 				break;
 
 			default:

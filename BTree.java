@@ -1,4 +1,5 @@
 
+
 public class BTree {
 
 	int t;
@@ -67,7 +68,7 @@ public class BTree {
 		int i = 0;
 		while (i < node.getCount() && k > node.getKey(i))
 			i++;
-		if (i <= node.count && k == node.getKey(i))
+		if (i < node.count && k == node.getKey(i))
 			return node;
 		else if (node.isLeaf())
 			return null;
@@ -148,7 +149,7 @@ public class BTree {
 
 	public BNode searchParentRec(int key, BNode node, BNode parent) {
 		checkCapacity(node, parent);
-		for (int i = 0; i <= node.getCount(); i++) {
+		for (int i = 0; i < node.getCount(); i++) {
 			if (node.getKey(i) > key) {
 				return searchParentRec(key, node.getChild(i), node);
 			} else if (i == node.getCount())
@@ -171,7 +172,7 @@ public class BTree {
 			else if (index != parent.getCount()) { // merge left
 				merge(node, parent, parent.getChild(index + 1), index);
 			} else { // merge right
-				merge(parent.getChild(index - 1), parent, node, index);
+				merge(parent.getChild(index - 1), parent, node, index-1);
 
 			}
 
@@ -232,15 +233,6 @@ public class BTree {
 
 	}
 
-	private int getNumChild(BNode node, BNode parent) {
-		for (int i = 0; i <= parent.getCount(); i++) {
-			if (parent.getChild(i) == node) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	private void deleteRoot(BNode node, int key) {
 	}
 
@@ -255,14 +247,23 @@ public class BTree {
 	}
 
 	private void deleteBranch(BNode node, BNode parent, int key) {
-		// TODO Auto-generated method stub
+			BNode suc = findSuccessorRec(key, node);			
+				int sucKey = suc.getKey(0);
+				delete(sucKey);
+				BNode newNode = search(key);
+				for(int i = 0 ; i < newNode.getCount() ; i ++)
+					if(key == newNode.getKey(i))
+						newNode.setKey(i, sucKey);
+				
 
-	}
+				
+				
+				}
 
 	private void deleteLeaf(BNode node, BNode parent, int key) {
 		if (node.getCount() == t - 1)
 			fixNodeRec(root, null, key);
-		deleteSimpleLeaf(node, key);
+		deleteSimpleLeaf(search(key), key);
 	}
 
 	private BNode fixNodeRec(BNode node, BNode parent, int key) {
@@ -293,8 +294,47 @@ public class BTree {
 		node.setChild(node.getCount(), null);
 	}
 
+
+	public BNode findSuccessorRec(int key , BNode node){
+		if(node.isLeaf()) return node;
+		for(int i = 0 ; i < node.getCount() ; i++) {
+				
+			if(node.getKey(i) == key)
+				return findSuccessorRec(key, node.getChild(i+1));
+		}
+		return findSuccessorRec(key, node.getChild(0));
+	}
+	public BNode findPredecessorRec(int key , BNode node ){
+		if(node.isLeaf()) return node;
+		for(int i = 0 ; i < node.getCount() ; i++) {
+			if( node.getKey(i) == key)
+				return findPredecessorRec(key, node.getChild(i) );
+
+		}
+		return findPredecessorRec(key, node.getChild(node.getCount()));
+	}
+
+	private int getNumChild(BNode node, BNode parent) {
+		for (int i = 0; i <= parent.getCount(); i++) {
+			if (parent.getChild(i) == node) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	private int getNumKey(int key, BNode node) {
+		for (int i = 0; i < node.getCount(); i++) {
+			if (node.getKey(i) == key) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	public BNode getRoot() {
 		return root;
 	}
+	
+
 
 }
