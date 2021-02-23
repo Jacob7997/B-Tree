@@ -14,20 +14,6 @@ public class BMain {
 		System.out.println("Following with the key you want that action.");
 		System.out.println();
 
-		tree.insert(5);
-		tree.insert(10);
-		tree.insert(30);
-		tree.insert(40);
-		tree.insert(50);
-		tree.insert(60);
-		tree.insert(45);
-		tree.insert(25);
-		tree.insert(21);
-		tree.insert(22);
-		tree.insert(20);
-
-
-		System.out.println(tree.toString());
 
 		while (true) {
 			int cas = scn.nextInt();
